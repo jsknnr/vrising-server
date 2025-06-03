@@ -7,6 +7,38 @@ timestamp () {
   date +"%Y-%m-%d %H:%M:%S,%3N"
 }
 
+# Required Arguments
+# wine \
+args=( "${VRISING_PATH}/VRisingServer.exe" )
+args+=( "-batchmode" )
+args+=( "-nographics" )
+args+=( "-persistentDataPath" "${VRISING_PATH}/save-data" )
+args+=( "-logFile" "${VRISING_PATH}/logs/VRisingServer.log" )
+args+=( "-serverName" "${SERVER_NAME}" )
+args+=( "-description" "${DESCRIPTION}" )
+args+=( "-gamePort" "${GAME_PORT}" )
+args+=( "-queryPort" "${QUERY_PORT}" )
+args+=( "-bindAddress" "${BIND_ADDRESS}" )
+args+=( "-hideIpAddress" "${HIDE_IP}" )
+args+=( "-lowerFPSWhenEmpty" "${LOWER_FPS_EMPTY}" )
+args+=( "-secure" "${SECURE}" )
+args+=( "-listOnEOS" "${EOS_LIST}" )
+args+=( "-listOnSteam" "${STEAM_LIST}" )
+args+=( "-saveName" "${SAVE_NAME}" )
+
+# Optional Arguments
+if [[ -n "${SERVER_PASSWORD:-}" ]]; then
+  args+=( "-password" "${SERVER_PASSWORD}" )
+fi
+
+if [[ -n "${GAME_PRESET:-}" ]]; then
+  args+=( "-preset" "${GAME_PRESET}" )
+fi
+
+if [[ -n "${DIFFICULTY:-}" ]]; then
+  args+=( "-difficultyPreset" "${DIFFICULTY}" )
+fi
+
 # Install/Update V Rising
 echo "$(timestamp) INFO: Updating V Rising Dedicated Server"
 steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$VRISING_PATH" +login anonymous +app_update ${STEAM_APP_ID} validate +quit
@@ -27,22 +59,4 @@ Xvfb :1 -screen 0 1024x768x16 &
 
 # Start VRising
 echo "$(timestamp) INFO: Launching V Rising"
-wine ${VRISING_PATH}/VRisingServer.exe \
-    -batchmode \
-    -nographics \
-    -persistentDataPath "${VRISING_PATH}/save-data" \
-    -logFile "${VRISING_PATH}/logs/VRisingServer.log" \
-    -serverName "${SERVER_NAME}" \
-    -description "${DESCRIPTION}" \
-    -gamePort "${GAME_PORT}" \
-    -queryPort "${QUERY_PORT}" \
-    -bindAddress "${BIND_ADDRESS}" \
-    -hideIpAddress "${HIDE_IP}" \
-    -lowerFPSWhenEmpty "${LOWER_FPS_EMPTY}" \
-    -password "${SERVER_PASSWORD}" \
-    -secure "${SECURE}" \
-    -listOnEOS "${EOS_LIST}" \
-    -listOnSteam "${STEAM_LIST}" \
-    -preset "${GAME_PRESET}" \
-    -difficultyPreset "${DIFFICULTY}" \
-    -saveName "${SAVE_NAME}"
+exec wine "${args[@]}"

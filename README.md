@@ -7,6 +7,11 @@ Run the container directly, build locally, use the compose file, run in a k8s en
 
 Persistent storage should be mounted to /opt/steam/vrising/save-data
 
+## Build Dockerfile
+```
+docker buildx build --pull --build-arg GOLANG_VERSION=1.23.5 --build-arg TARGETARCH=amd64 --build-arg DRIVER_VERSION=550.127.08 --build-arg KERNEL_VERSION=5.15.0-1070-nvidia --build-arg DRIVER_BRANCH=550 -t ambrons/driver:550.127-ubuntu24.04 --platform linux/amd64 .
+```
+
 ## Environment Variables
 
 | Name | Description | Default | Required |
