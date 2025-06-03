@@ -30,8 +30,10 @@ spec:
         env:
         - name: SERVER_NAME
           value: {{ .Values.env.serverName | squote }}
+        {{- with .Values.env.serverPassword }}
         - name: SERVER_PASSWORD
-          value: {{ .Values.env.serverPassword | squote }}
+          value: {{ . | squote }}
+        {{- end }}
         - name: GAME_PORT
           value: {{ .Values.env.gamePort | squote }}
         - name: QUERY_PORT
@@ -50,10 +52,14 @@ spec:
           value: {{ .Values.env.eosList | squote }}
         - name: STEAM_LIST
           value: {{ .Values.env.steamList | squote }}
+        {{- with .Values.env.gamePreset }}
         - name: GAME_PRESET
-          value: {{ .Values.env.gamePreset | squote }}
+          value: {{ . | squote }}
+        {{- end }}
+        {{- with .Values.env.difficulty }}
         - name: DIFFICULTY
-          value: {{ .Values.env.difficulty | squote }}
+          value: {{ . | squote }}
+        {{- end }}
         - name: SAVE_NAME
           value: {{ .Values.env.saveName | squote }}
         ports:
@@ -66,6 +72,10 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /opt/steam/vrising/save-data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+      {{- end }}
       volumes:
       - name: data
         persistentVolumeClaim:
