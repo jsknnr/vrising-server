@@ -7,12 +7,17 @@ Run the container directly, build locally, use the compose file, run in a k8s en
 
 Persistent storage should be mounted to /opt/steam/vrising/save-data
 
+## Build Dockerfile
+```
+docker buildx build --pull --build-arg GOLANG_VERSION=1.23.5 --build-arg TARGETARCH=amd64 --build-arg DRIVER_VERSION=550.127.08 --build-arg KERNEL_VERSION=5.15.0-1070-nvidia --build-arg DRIVER_BRANCH=550 -t ambrons/driver:550.127-ubuntu24.04 --platform linux/amd64 .
+```
+
 ## Environment Variables
 
 | Name | Description | Default | Required |
 | ---- | ----------- | ------- | -------- |
 | SERVER_NAME | Name for the Server | None | True |
-| SERVER_PASSWORD | Password for the server | None | True |
+| SERVER_PASSWORD | Password for the server | None | False |
 | GAME_PORT | Port for server connections | 27015 | False |
 | QUERY_PORT | Port for steam query of server | 27016 | False |
 | DESCRIPTION | Description for server | None | False |
@@ -22,8 +27,8 @@ Persistent storage should be mounted to /opt/steam/vrising/save-data
 | SECURE | Enable Steam VAC | True | False |
 | EOS_LIST | Register on EOS list server or not. The client looks for servers here by default, due to additional features available. | True | False |
 | STEAM_LIST | Register on Steam list server or not. | False | False |
-| GAME_PRESET | Load a ServerGameSettings preset. | StandardPvP | False |
-| DIFFICULTY | Load a GameDifficulty preset. | Difficulty_Normal | False |
+| GAME_PRESET | Load a ServerGameSettings preset. | None | False |
+| DIFFICULTY | Load a GameDifficulty preset. | None | False |
 | SAVE_NAME | Name of save file/directory. Must be a valid directory name. | vrising_world | False |
 
 ### Podman

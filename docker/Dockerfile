@@ -15,8 +15,6 @@ ENV SECURE "true"
 ENV DESCRIPTION "A VRISING SERVER"
 ENV EOS_LIST "true"
 ENV STEAM_LIST "false"
-ENV GAME_PRESET "StandardPvP"
-ENV DIFFICULTY "Difficulty_Normal"
 ENV SAVE_NAME "vrising_world"
 
 RUN sed -i 's#^Components: .*#Components: main non-free contrib#g' /etc/apt/sources.list.d/debian.sources \
